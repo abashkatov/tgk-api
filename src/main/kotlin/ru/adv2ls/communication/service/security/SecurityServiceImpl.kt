@@ -29,12 +29,12 @@ class SecurityServiceImpl : SecurityService {
     @Override
     override fun autoLogin(username: String?, password: String?) {
         val userDetails = userDetailsService.loadUserByUsername(username)
-        val usernamePasswordAuthenticationToken = UsernamePasswordAuthenticationToken(userDetails, password, userDetails.authorities)
+        val authenticationToken = UsernamePasswordAuthenticationToken(userDetails, password, userDetails.authorities)
 
-        authenticationManager.authenticate(usernamePasswordAuthenticationToken)
+        authenticationManager.authenticate(authenticationToken)
 
-        if (usernamePasswordAuthenticationToken.isAuthenticated) {
-            SecurityContextHolder.getContext().authentication = usernamePasswordAuthenticationToken
+        if (authenticationToken.isAuthenticated) {
+            SecurityContextHolder.getContext().authentication = authenticationToken
         }
     }
 }

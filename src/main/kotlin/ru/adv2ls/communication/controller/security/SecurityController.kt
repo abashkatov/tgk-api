@@ -29,7 +29,7 @@ class SecurityController {
     }
 
     @ResponseBody
-    @RequestMapping("/registration")
+    @PostMapping("/registration")
     fun registration(@RequestBody @Valid userDto: UserDto, bindingResult: BindingResult): String {
         userValidator.validate(userDto, bindingResult);
         if(bindingResult.hasErrors()) {
@@ -37,7 +37,7 @@ class SecurityController {
         }
         val user: User = User(userDto)
         userService.save(user);
-        securityService.autoLogin(user.username, user.password);
+        securityService.autoLogin(userDto.username, userDto.password);
 
         return "registration complete";
     }

@@ -29,6 +29,7 @@ class WebSecurityConfig : WebSecurityConfigurerAdapter() {
     @Throws(Exception::class)
     override fun configure(http: HttpSecurity) {
         http
+            .csrf().disable()
             .authorizeRequests()
                 .antMatchers(HttpMethod.POST,"/registration").permitAll()
                 .antMatchers("/").permitAll()

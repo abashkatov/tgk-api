@@ -1,5 +1,5 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.hibernate.orm.tooling.gradle.EnhanceExtension
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 group = "ru.adv2ls"
 version = "0.0.1-SNAPSHOT"
@@ -8,7 +8,7 @@ java.sourceCompatibility = JavaVersion.VERSION_1_8
 val db_url: String by project
 val db_username: String by project
 val db_password: String by project
-
+val jjwtVersion: String by project
 
 plugins {
     id("org.springframework.boot") version "2.2.5.RELEASE"
@@ -34,6 +34,9 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation("org.postgresql:postgresql:42.2.0")
     implementation ("org.springframework.security:spring-security-test")
+    implementation("io.jsonwebtoken:jjwt-api:$jjwtVersion")
+    implementation("io.jsonwebtoken:jjwt-impl:$jjwtVersion")
+    implementation("io.jsonwebtoken:jjwt-jackson:$jjwtVersion")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.boot:spring-boot-starter-test") {
         exclude(group = "org.junit.vintage", module = "junit-vintage-engine")

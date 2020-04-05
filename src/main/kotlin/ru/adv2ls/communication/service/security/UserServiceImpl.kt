@@ -8,13 +8,10 @@ import ru.adv2ls.communication.repository.UserRepository
 
 
 @Service
-class UserServiceImpl: UserService {
-
-    @Autowired
-    private lateinit var userRepository: UserRepository
-
-    @Autowired
-    private lateinit var bCryptPasswordEncoder: BCryptPasswordEncoder
+class UserServiceImpl(
+        @Autowired private val userRepository: UserRepository,
+        @Autowired private val bCryptPasswordEncoder: BCryptPasswordEncoder
+) : UserService {
 
     @Override
     override fun save(user: User) {

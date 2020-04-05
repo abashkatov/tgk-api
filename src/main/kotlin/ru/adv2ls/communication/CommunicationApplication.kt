@@ -7,5 +7,5 @@ import org.springframework.boot.runApplication
 class CommunicationApplication
 
 fun main(args: Array<String>) {
-	runApplication<CommunicationApplication>(*args)
+    runApplication<CommunicationApplication>(*args)
 }

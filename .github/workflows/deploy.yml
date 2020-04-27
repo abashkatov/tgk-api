@@ -1,0 +1,32 @@
+# This workflow will build and push a new container image to GH packages,
+# and then will deploy a new task definition to server, when a release is created
+on:
+  push:
+    branches: [ add-deploy ]
+#  release:
+#    types: [created]
+
+name: Deploy
+
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Build, tag, and push image to packages
+        id: build-image
+        env:
+          REGISTRY: docker.pkg.github.com/abashkatov/tgk-api
+          IMAGE_TAG: ${{ github.version }}
+#          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          # Build a docker container and
+          # push it to ECR so that it can
+          # be deployed to packages.
+          docker build -t $REGISTRY:$IMAGE_TAG .
+          docker push $REGISTRY:$IMAGE_TAG
+          echo "::set-output name=image::$REGISTRY:$IMAGE_TAG"

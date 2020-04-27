@@ -12,7 +12,7 @@ import org.springframework.validation.BindingResult
 import org.springframework.web.bind.annotation.*
 import ru.adv2ls.communication.dto.UserDto
 import ru.adv2ls.communication.dto.security.SigninDto
-import ru.adv2ls.communication.dto.security.TokenDto
+import ru.adv2ls.communication.dto.security.UserTokenDto
 import ru.adv2ls.communication.entity.User
 import ru.adv2ls.communication.repository.UserRepository
 import ru.adv2ls.communication.service.security.SecurityService
@@ -36,7 +36,7 @@ class SecurityController(
 
     @ResponseBody
     @PostMapping("/login", produces = [MediaType.APPLICATION_JSON_VALUE])
-    fun login(@RequestBody @Valid signinDto: SigninDto): TokenDto {
+    fun login(@RequestBody @Valid signinDto: SigninDto): UserTokenDto {
         val user = userRepository.findByUsername(signinDto.username)
                 ?: throw UsernameNotFoundException(signinDto.username)
         val authenticationToken = securityService.signIn(user, signinDto.password)
@@ -45,12 +45,16 @@ class SecurityController(
             throw BadCredentialsException("Bad credentials")
         }
 
-        return TokenDto(userName = signinDto.username, token = tokenProvider.createToken(user))
+        return UserTokenDto(
+                userName = signinDto.username,
+                email = user.email,
+                token = tokenProvider.createToken(user)
+        )
     }
 
     @ResponseBody
     @PostMapping("/registration", produces = [MediaType.APPLICATION_JSON_VALUE])
-    fun registration(@RequestBody @Valid userDto: UserDto, bindingResult: BindingResult): TokenDto {
+    fun registration(@RequestBody @Valid userDto: UserDto, bindingResult: BindingResult): UserTokenDto {
         userValidator.validate(userDto, bindingResult)
         if (bindingResult.hasErrors()) {
             throw BadCredentialsException("Bad credentials")
@@ -62,6 +66,10 @@ class SecurityController(
             throw BadHttpRequest()
         }
 
-        return TokenDto(userName = user.username, token = tokenProvider.createToken(user))
+        return UserTokenDto(
+                userName = user.username,
+                email = user.email,
+                token = tokenProvider.createToken(user)
+        )
     }
 }

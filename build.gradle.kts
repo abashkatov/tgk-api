@@ -78,3 +78,22 @@ tasks.withType<KotlinCompile> {
         jvmTarget = "1.8"
     }
 }
+
+tasks.register<Jar>("uberJar") {
+    enabled = true
+    archiveClassifier.set("uber")
+    manifest {
+        attributes("Main-Class" to "ru.adv2ls.communication.CommunicationApplicationKt")
+    }
+    from(sourceSets.main.get().output)
+    dependsOn(configurations.runtimeClasspath)
+    from({
+        configurations.runtimeClasspath.get().filter { it.name.endsWith("jar") }.map { zipTree(it) }
+    })
+//    from({
+//        configurations.runtimeClasspath.get().filter { it.name.endsWith("jar") }.map { zipTree(it) }
+//    })
+//    from ({
+//        configurations.compile. .collect { it.isDirectory() ? it : zipTree(it) }
+//    })
+}

@@ -15,17 +15,35 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+#      - name: Build the test environment
+#        run: docker-compose up -d
+
       - name: Set up JDK 1.8
         uses: actions/setup-java@v1
+        with:
+          java-version: '8.0'
+          java-package: jdk
+          architecture: x64
 
       - name: Build with Gradle
         run: gradle build
 
-      - name: Publish to GitHub Packages
-        run: gradle publish
+      - name: Copy file via scp
+        uses: appleboy/scp-action@master
         env:
-          USERNAME: ${{ github.actor }}
-          PASSWORD: ${{ secrets.GITHUB_TOKEN }}
+          HOST: ${{ secrets.HOST }}
+          USERNAME: ${{ secrets.USERNAME }}
+          PORT: 22
+          KEY: ${{ secrets.SSHKEY }}
+        with:
+          source: "./build/libs/*"
+          target: ${{ secrets.DEPLOY_PATH }}
+
+#      - name: Publish to GitHub Packages
+#        run: gradle publish
+#        env:
+#          USERNAME: ${{ github.actor }}
+#          PASSWORD: ${{ secrets.GITHUB_TOKEN }}
 #    name: Deploy
 #    runs-on: ubuntu-latest
 #

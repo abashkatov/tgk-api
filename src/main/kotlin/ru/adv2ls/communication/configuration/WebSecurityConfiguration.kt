@@ -18,7 +18,7 @@ import ru.adv2ls.communication.service.security.jwt.TokenProvider
 
 @Configuration
 @EnableWebSecurity
-class WebSecurityConfig(
+class WebSecurityConfiguration(
         @Qualifier("userDetailsServiceImpl") @Autowired private val userDetailsService: UserDetailsService,
         @Autowired private val jwtTokenProvider: TokenProvider
 ) : WebSecurityConfigurerAdapter() {
@@ -38,6 +38,7 @@ class WebSecurityConfig(
         http
                 .httpBasic().disable()
                 .csrf().disable()
+                .cors().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()

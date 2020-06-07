@@ -2,7 +2,9 @@
 # and then will deploy a new task definition to server, when a release is created
 on:
   push:
-    branches: [ add-deploy ]
+    tags:
+      - v*
+#    branches: [ add-deploy ]
 #  release:
 #    types: [created]
 

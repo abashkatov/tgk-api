@@ -90,10 +90,4 @@ tasks.register<Jar>("uberJar") {
     from({
         configurations.runtimeClasspath.get().filter { it.name.endsWith("jar") }.map { zipTree(it) }
     })
-//    from({
-//        configurations.runtimeClasspath.get().filter { it.name.endsWith("jar") }.map { zipTree(it) }
-//    })
-//    from ({
-//        configurations.compile. .collect { it.isDirectory() ? it : zipTree(it) }
-//    })
 }
